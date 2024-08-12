@@ -46,6 +46,8 @@ export default {
     ...mapGetters(['cartCount'])
   }
 };
+
+
 </script>
 
 <style scoped>
