@@ -47,7 +47,10 @@ export default {
         if (response.ok) {
           // Store the token for future requests
           localStorage.setItem('token', data.token);
-          this.$emit('login'); // Notify the parent component about successful login
+          const redirectTo = this.$route.query.redirect || '/'; // Redirect to the originally requested page or home
+          this.$router.push(redirectTo); // Navigate to the page after login
+          this.$emit('login-success'); // Notify the parent component about successful login
+          this.$emit('cancel'); // Close the login modal
         } else {
           alert('Login failed: ' + (data.error || 'Invalid credentials'));
         }

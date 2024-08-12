@@ -2,7 +2,7 @@
   <div id="app">
     <Header @toggle-login="showLoginModal = !showLoginModal" />
     <router-view></router-view> <!-- Display routed components -->
-    <LoginModal v-if="showLoginModal" @login="handleLogin" @cancel="showLoginModal = false" />
+    <LoginModal v-if="showLoginModal" @login-success="handleLoginSuccess" @cancel="showLoginModal = false" />
     <button v-if="isAuthenticated" @click="logout" class="bg-red-500 text-white py-2 px-4 rounded fixed bottom-4 right-4">Logout</button>
   </div>
 </template>
@@ -28,12 +28,13 @@ export default {
   },
   methods: {
     /**
-     * Handles user login by navigating to the home page.
+     * Handles successful login by navigating to the home page.
      * Closes the login modal after login.
      */
-    handleLogin() {
+    handleLoginSuccess() {
       this.isAuthenticated = true; // Set the user as authenticated
-      this.$router.push('/'); // Navigate to home page after login
+      const redirectTo = this.$route.query.redirect || '/'; // Redirect to the originally requested page or home
+      this.$router.push(redirectTo); // Navigate to the page after login
       this.showLoginModal = false; // Close the login modal
     },
     /**
