@@ -15,6 +15,15 @@
       <div class="flex-1 mx-4">
         <input type="text" placeholder="Search items..." class="w-full p-2 border rounded bg-white text-gray-800" v-model="searchQuery" @input="filterItems" />
       </div>
+      <div>
+        <button
+          v-if="cart.length > 0"
+          @click="clearCart"
+          class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+        >
+          Clear Cart
+        </button>
+      </div>
     </div>
     
     <div v-if="filteredCart.length === 0" class="text-center text-gray-600">Your cart is empty.</div>
@@ -113,7 +122,11 @@ export default {
      */
     removeFromCart(productId) {
       this.$store.commit('removeFromCart', productId);
-    }
+    },
+    
+    clearCart() {
+      this.$store.commit('clearCart');
+    },
   },
   created() {
     /**

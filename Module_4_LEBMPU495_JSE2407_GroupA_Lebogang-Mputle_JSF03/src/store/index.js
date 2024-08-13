@@ -37,6 +37,15 @@ const mutations = {
     state.products = products;
   },
 
+
+  /**
+   * Clears all products from the cart.
+   * @param {State} state - The state object.
+   */
+  clearCart(state) {
+    state.cart = [];
+  },
+
   /**
    * Adds a product to the cart.
    * @param {State} state - The state object.
@@ -115,6 +124,8 @@ const getters = {
    */
   cartCount: (state) => state.cart.length,
 };
+
+
 
 export default createStore({
   state,

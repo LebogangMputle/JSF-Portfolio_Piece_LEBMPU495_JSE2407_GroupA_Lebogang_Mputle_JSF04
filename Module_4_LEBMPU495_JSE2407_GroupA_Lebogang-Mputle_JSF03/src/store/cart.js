@@ -18,6 +18,10 @@ export default createStore({
     },
     removeFromCart(state, productId) {
       state.cart = state.cart.filter(item => item.id !== productId);
+    },
+    clearCart(state) {
+      state.cart = []; // Clears the entire cart
+      localStorage.removeItem('cart'); // Optional: Also remove from local storage if you're storing cart there
     }
   },
   getters: {
