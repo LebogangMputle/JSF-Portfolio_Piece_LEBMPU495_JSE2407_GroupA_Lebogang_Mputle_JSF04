@@ -27,6 +27,10 @@
             </button>
           </div>
         </div>
+        <!-- Error message display -->
+        <div v-if="errorMessage" class="mb-4 text-red-500">
+          {{ errorMessage }}
+        </div>
         <div class="flex justify-end">
           <button type="button" @click="$emit('cancel')" class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2" :disabled="isLoading">Cancel</button>
           <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded" :disabled="isLoading">
@@ -50,7 +54,8 @@ export default {
       username: '',
       password: '',
       passwordVisible: false, // State to track password visibility
-      isLoading: false // State to track if authentication is in progress
+      isLoading: false, // State to track if authentication is in progress
+      errorMessage: '' // State to store error messages
     };
   },
   methods: {
@@ -59,6 +64,7 @@ export default {
     },
     async login() {
       this.isLoading = true; // Set loading state to true
+      this.errorMessage = ''; // Clear previous error messages
       try {
         const response = await fetch('https://fakestoreapi.com/auth/login', {
           method: 'POST',
@@ -81,10 +87,10 @@ export default {
           this.$emit('login-success'); // Notify the parent component about successful login
           this.$emit('cancel'); // Close the login modal
         } else {
-          alert('Login failed: ' + (data.error || 'Invalid credentials'));
+          this.errorMessage = 'Login failed, check your username or password.';
         }
       } catch (error) {
-        alert('An error occurred: ' + error.message);
+        this.errorMessage = 'Login failed, check your username or password.';
       } finally {
         this.isLoading = false; // Reset loading state
       }
