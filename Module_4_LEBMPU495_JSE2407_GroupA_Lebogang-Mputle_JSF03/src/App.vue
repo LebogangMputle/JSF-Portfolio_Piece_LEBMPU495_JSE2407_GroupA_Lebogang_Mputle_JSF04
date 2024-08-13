@@ -1,6 +1,11 @@
 <template>
   <div id="app">
-    <Header @toggle-login="showLoginModal = !showLoginModal" />
+    <!-- Pass isAuthenticated and handleLogout as props to the Header component -->
+    <Header 
+      :isAuthenticated="isAuthenticated" 
+      @toggle-login="showLoginModal = !showLoginModal" 
+      @logout="logout"
+    />
     <router-view></router-view> <!-- Display routed components -->
 
     <!-- Login Modal -->
@@ -9,15 +14,6 @@
       @login="handleLogin"
       @cancel="showLoginModal = false"
     />
-
-    <!-- Logout Button -->
-    <button
-      v-if="isAuthenticated"
-      @click="logout"
-      class="bg-red-500 text-white py-2 px-4 rounded fixed bottom-4 right-4"
-    >
-      Logout
-    </button>
   </div>
 </template>
 
