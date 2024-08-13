@@ -123,6 +123,16 @@ const getters = {
    * @returns {number} The number of items in the cart.
    */
   cartCount: (state) => state.cart.length,
+    /**
+   * Calculates the total cost of items in the cart.
+   * @param {State} state - The state object.
+   * @returns {number} The total cost of items in the cart, rounded to two decimal points.
+   */
+    cartTotal(state) {
+      return state.cart.reduce((total, product) => {
+        return total + product.price;
+      }, 0).toFixed(2);
+    },
 };
 
 

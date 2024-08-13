@@ -25,6 +25,11 @@
         </button>
       </div>
     </div>
+
+    <!-- Display Total Cost -->
+    <div v-if="cart.length > 0" class="mb-4">
+      <p class="text-xl font-semibold">Total Cost: ${{ cartTotal }}</p>
+    </div>
     
     <div v-if="filteredCart.length === 0" class="text-center text-gray-600">Your cart is empty.</div>
     <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -71,7 +76,14 @@ export default {
      */
     cart() {
       return this.$store.getters.cart;
-    }
+    },
+        /**
+     * Retrieves the total cost of items in the cart from the Vuex store.
+     * @returns {number} The total cost of items in the cart.
+     */
+     cartTotal() {
+      return this.$store.getters.cartTotal;
+    },
   },
   watch: {
     /**
