@@ -1,12 +1,21 @@
-// store/index.js
+/**
+ * @module store
+ */
 
 import { createStore } from 'vuex';
+
+/**
+ * @typedef {Object} State
+ * @property {Array} products - List of products.
+ * @property {Array} cart - List of products in the cart, each with a quantity.
+ * @property {Array} wishlist - List of products in the wishlist.
+ * @property {boolean} isLoggedIn - User's login status.
+ */
 
 const state = {
   products: [],
   cart: [],
   wishlist: [],
-  comparisonList: [], // Added for comparison functionality
   isLoggedIn: false,
 };
 
@@ -14,32 +23,50 @@ const mutations = {
   setProducts(state, products) {
     state.products = products;
   },
+
   clearCart(state) {
     state.cart = [];
   },
+
   addToCart(state, product) {
-    state.cart.push(product);
+    const cartItem = state.cart.find(item => item.id === product.id);
+    if (cartItem) {
+      cartItem.quantity += 1;
+    } else {
+      state.cart.push({ ...product, quantity: 1 });
+    }
   },
+
   removeFromCart(state, productId) {
     state.cart = state.cart.filter(product => product.id !== productId);
   },
+
+  incrementQuantity(state, productId) {
+    const cartItem = state.cart.find(item => item.id === productId);
+    if (cartItem) {
+      cartItem.quantity += 1;
+    }
+  },
+
+  decrementQuantity(state, productId) {
+    const cartItem = state.cart.find(item => item.id === productId);
+    if (cartItem && cartItem.quantity > 1) {
+      cartItem.quantity -= 1;
+    } else {
+      state.cart = state.cart.filter(item => item.id !== productId);
+    }
+  },
+
   addToWishlist(state, product) {
     state.wishlist.push(product);
   },
+
   removeFromWishlist(state, productId) {
     state.wishlist = state.wishlist.filter(product => product.id !== productId);
   },
+
   setIsLoggedIn(state, status) {
     state.isLoggedIn = status;
-  },
-  // New Mutations for Comparison List
-  addToComparisonList(state, product) {
-    if (!state.comparisonList.find(item => item.id === product.id)) {
-      state.comparisonList.push(product);
-    }
-  },
-  removeFromComparisonList(state, productId) {
-    state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
   },
 };
 
@@ -52,16 +79,18 @@ const actions = {
 };
 
 const getters = {
-  products: state => state.products,
-  cart: state => state.cart,
-  wishlist: state => state.wishlist,
-  isLoggedIn: state => state.isLoggedIn,
-  cartCount: state => state.cart.length,
+  products: (state) => state.products,
+  cart: (state) => state.cart,
+  wishlist: (state) => state.wishlist,
+  isLoggedIn: (state) => state.isLoggedIn,
+  
+  cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
+
   cartTotal(state) {
-    return state.cart.reduce((total, product) => total + product.price, 0).toFixed(2);
+    return state.cart.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0).toFixed(2);
   },
-  // New Getter for Comparison List
-  comparisonList: state => state.comparisonList,
 };
 
 export default createStore({
