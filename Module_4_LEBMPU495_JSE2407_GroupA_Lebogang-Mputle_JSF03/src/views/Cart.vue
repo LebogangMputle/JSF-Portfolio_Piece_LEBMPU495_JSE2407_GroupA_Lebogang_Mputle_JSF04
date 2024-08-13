@@ -38,7 +38,16 @@
         <h2 class="text-lg font-semibold mb-2">{{ product.title }}</h2>
         <p class="text-gray-500 mb-2">{{ product.category }}</p>
         <p class="text-blue-500 font-bold mb-2">${{ product.price.toFixed(2) }}</p>
-        <button @click="removeFromCart(product.id)" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Remove from Cart</button>
+
+        <!-- Quantity Controls -->
+        <div class="flex items-center justify-between">
+          <button @click="decrementQuantity(product.id)" class="bg-gray-300 text-gray-800 px-2 py-1 rounded hover:bg-gray-400 transition">-</button>
+          <span class="mx-2">{{ product.quantity }}</span>
+          <button @click="incrementQuantity(product.id)" class="bg-gray-300 text-gray-800 px-2 py-1 rounded hover:bg-gray-400 transition">+</button>
+        </div>
+
+        <p class="mt-2 text-blue-500 font-bold">Subtotal: ${{ (product.price * product.quantity).toFixed(2) }}</p>
+        <button @click="removeFromCart(product.id)" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">Remove from Cart</button>
       </div>
     </div>
   </div>
@@ -46,74 +55,32 @@
 
 <script>
 export default {
-  /**
-   * Data properties of the component.
-   * @returns {Object}
-   */
   data() {
     return {
-      /**
-       * The current sort order for the cart items.
-       * @type {string}
-       */
       sortOrder: 'default',
-      /**
-       * The current search query for filtering cart items.
-       * @type {string}
-       */
       searchQuery: '',
-      /**
-       * The filtered list of cart items.
-       * @type {Array<Object>}
-       */
       filteredCart: []
     };
   },
   computed: {
-    /**
-     * Computed property to get the cart items from the store.
-     * @returns {Array<Object>}
-     */
     cart() {
       return this.$store.getters.cart;
     },
-        /**
-     * Retrieves the total cost of items in the cart from the Vuex store.
-     * @returns {number} The total cost of items in the cart.
-     */
-     cartTotal() {
+    cartTotal() {
       return this.$store.getters.cartTotal;
     },
   },
   watch: {
-    /**
-     * Watcher for the cart items.
-     * Calls updateFilteredCart method when the cart items change.
-     */
     cart: 'updateFilteredCart',
-    /**
-     * Watcher for the sortOrder property.
-     * Calls sortItems method when the sortOrder changes.
-     */
     sortOrder: 'sortItems',
-    /**
-     * Watcher for the searchQuery property.
-     * Calls filterItems method when the searchQuery changes.
-     */
     searchQuery: 'filterItems'
   },
   methods: {
-    /**
-     * Updates the filteredCart property based on the current cart items.
-     */
     updateFilteredCart() {
       this.filteredCart = [...this.cart];
       this.sortItems();
       this.filterItems();
     },
-    /**
-     * Sorts the filteredCart items based on the current sortOrder.
-     */
     sortItems() {
       if (this.sortOrder === 'price-asc') {
         this.filteredCart.sort((a, b) => a.price - b.price);
@@ -121,30 +88,24 @@ export default {
         this.filteredCart.sort((a, b) => b.price - a.price);
       }
     },
-    /**
-     * Filters the cart items based on the searchQuery.
-     */
     filterItems() {
       this.filteredCart = this.cart.filter(product => product.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
       this.sortItems();
     },
-    /**
-     * Removes an item from the cart by its ID.
-     * @param {number} productId - The ID of the product to remove.
-     */
     removeFromCart(productId) {
       this.$store.commit('removeFromCart', productId);
     },
-    
     clearCart() {
       this.$store.commit('clearCart');
     },
+    incrementQuantity(productId) {
+      this.$store.commit('incrementQuantity', productId);
+    },
+    decrementQuantity(productId) {
+      this.$store.commit('decrementQuantity', productId);
+    }
   },
   created() {
-    /**
-     * Called when the component is created.
-     * Initializes the filteredCart property.
-     */
     this.updateFilteredCart();
   }
 };
