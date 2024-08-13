@@ -9,9 +9,9 @@ export default createStore({
   },
   mutations: {
     addToCart(state, product) {
-      const existingProduct = state.cart.find(item => item.id === product.id);
-      if (existingProduct) {
-        existingProduct.quantity += 1;
+      const cartItem = state.cart.find(item => item.id === product.id);
+      if (cartItem) {
+        cartItem.quantity += 1;
       } else {
         state.cart.push({ ...product, quantity: 1 });
       }
@@ -29,4 +29,5 @@ export default createStore({
       return state.cart;
     }
   }
+  
 });

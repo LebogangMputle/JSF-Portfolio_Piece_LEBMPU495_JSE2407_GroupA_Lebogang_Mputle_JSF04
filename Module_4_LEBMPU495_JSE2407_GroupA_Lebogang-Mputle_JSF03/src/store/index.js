@@ -7,15 +7,11 @@ import { createStore } from 'vuex';
 /**
  * @typedef {Object} State
  * @property {Array} products - List of products.
- * @property {Array} cart - List of products in the cart.
+ * @property {Array} cart - List of products in the cart, each with a quantity.
  * @property {Array} wishlist - List of products in the wishlist.
  * @property {boolean} isLoggedIn - User's login status.
  */
 
-/**
- * State object for the Vuex store.
- * @type {State}
- */
 const state = {
   products: [],
   cart: [],
@@ -23,84 +19,58 @@ const state = {
   isLoggedIn: false,
 };
 
-/**
- * Mutations for the Vuex store.
- * @type {Object}
- */
 const mutations = {
-  /**
-   * Sets the products state.
-   * @param {State} state - The state object.
-   * @param {Array} products - The list of products.
-   */
   setProducts(state, products) {
     state.products = products;
   },
 
-
-  /**
-   * Clears all products from the cart.
-   * @param {State} state - The state object.
-   */
   clearCart(state) {
     state.cart = [];
   },
 
-  /**
-   * Adds a product to the cart.
-   * @param {State} state - The state object.
-   * @param {Object} product - The product to add.
-   */
   addToCart(state, product) {
-    state.cart.push(product);
+    const cartItem = state.cart.find(item => item.id === product.id);
+    if (cartItem) {
+      cartItem.quantity += 1;
+    } else {
+      state.cart.push({ ...product, quantity: 1 });
+    }
   },
 
-  /**
-   * Removes a product from the cart.
-   * @param {State} state - The state object.
-   * @param {number} productId - The ID of the product to remove.
-   */
   removeFromCart(state, productId) {
     state.cart = state.cart.filter(product => product.id !== productId);
   },
 
-  /**
-   * Adds a product to the wishlist.
-   * @param {State} state - The state object.
-   * @param {Object} product - The product to add.
-   */
+  incrementQuantity(state, productId) {
+    const cartItem = state.cart.find(item => item.id === productId);
+    if (cartItem) {
+      cartItem.quantity += 1;
+    }
+  },
+
+  decrementQuantity(state, productId) {
+    const cartItem = state.cart.find(item => item.id === productId);
+    if (cartItem && cartItem.quantity > 1) {
+      cartItem.quantity -= 1;
+    } else {
+      state.cart = state.cart.filter(item => item.id !== productId);
+    }
+  },
+
   addToWishlist(state, product) {
     state.wishlist.push(product);
   },
 
-  /**
-   * Removes a product from the wishlist.
-   * @param {State} state - The state object.
-   * @param {number} productId - The ID of the product to remove.
-   */
   removeFromWishlist(state, productId) {
     state.wishlist = state.wishlist.filter(product => product.id !== productId);
   },
 
-  /**
-   * Sets the user's login status.
-   * @param {State} state - The state object.
-   * @param {boolean} status - The login status.
-   */
   setIsLoggedIn(state, status) {
     state.isLoggedIn = status;
   },
 };
 
-/**
- * Actions for the Vuex store.
- * @type {Object}
- */
 const actions = {
-  /**
-   * Fetches the products from the API and commits the setProducts mutation.
-   * @param {Object} context - The Vuex context object.
-   */
   async fetchProducts({ commit }) {
     const response = await fetch('https://fakestoreapi.com/products');
     const data = await response.json();
@@ -108,34 +78,20 @@ const actions = {
   },
 };
 
-/**
- * Getters for the Vuex store.
- * @type {Object}
- */
 const getters = {
   products: (state) => state.products,
   cart: (state) => state.cart,
   wishlist: (state) => state.wishlist,
   isLoggedIn: (state) => state.isLoggedIn,
-  /**
-   * Retrieves the number of items in the cart.
-   * @param {State} state - The state object.
-   * @returns {number} The number of items in the cart.
-   */
-  cartCount: (state) => state.cart.length,
-    /**
-   * Calculates the total cost of items in the cart.
-   * @param {State} state - The state object.
-   * @returns {number} The total cost of items in the cart, rounded to two decimal points.
-   */
-    cartTotal(state) {
-      return state.cart.reduce((total, product) => {
-        return total + product.price;
-      }, 0).toFixed(2);
-    },
+  
+  cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
+
+  cartTotal(state) {
+    return state.cart.reduce((total, product) => {
+      return total + product.price * product.quantity;
+    }, 0).toFixed(2);
+  },
 };
-
-
 
 export default createStore({
   state,
