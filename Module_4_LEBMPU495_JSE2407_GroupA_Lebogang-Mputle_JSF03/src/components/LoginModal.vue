@@ -5,7 +5,7 @@
       <form @submit.prevent="login">
         <div class="mb-4">
           <label for="username" class="block mb-2">Username</label>
-          <input type="text" id="username" v-model="username" class="w-full p-2 border rounded">
+          <input type="text" id="username" v-model="username" class="w-full p-2 border rounded" :disabled="isLoading">
         </div>
         <div class="mb-4">
           <label for="password" class="block mb-2">Password</label>
@@ -15,21 +15,30 @@
               id="password"
               v-model="password"
               class="w-full p-2 border rounded"
+              :disabled="isLoading"
             />
             <button
               type="button"
               @click="togglePasswordVisibility"
               class="absolute inset-y-0 right-2 flex items-center text-sm text-gray-600"
+              :disabled="isLoading"
             >
               {{ passwordVisible ? 'Hide' : 'Show' }}
             </button>
           </div>
         </div>
         <div class="flex justify-end">
-          <button type="button" @click="$emit('cancel')" class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2">Cancel</button>
-          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Login</button>
+          <button type="button" @click="$emit('cancel')" class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2" :disabled="isLoading">Cancel</button>
+          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded" :disabled="isLoading">
+            {{ isLoading ? 'Logging in...' : 'Login' }}
+          </button>
         </div>
       </form>
+      <!-- Display loading spinner or message when loading -->
+      <div v-if="isLoading" class="mt-4 text-center text-gray-600">
+        Authenticating, please wait...
+        <div class="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full border-t-transparent mt-2"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -40,7 +49,8 @@ export default {
     return {
       username: '',
       password: '',
-      passwordVisible: false // State to track password visibility
+      passwordVisible: false, // State to track password visibility
+      isLoading: false // State to track if authentication is in progress
     };
   },
   methods: {
@@ -48,6 +58,7 @@ export default {
       this.passwordVisible = !this.passwordVisible; // Toggle the password visibility state
     },
     async login() {
+      this.isLoading = true; // Set loading state to true
       try {
         const response = await fetch('https://fakestoreapi.com/auth/login', {
           method: 'POST',
@@ -74,6 +85,8 @@ export default {
         }
       } catch (error) {
         alert('An error occurred: ' + error.message);
+      } finally {
+        this.isLoading = false; // Reset loading state
       }
     }
   }
