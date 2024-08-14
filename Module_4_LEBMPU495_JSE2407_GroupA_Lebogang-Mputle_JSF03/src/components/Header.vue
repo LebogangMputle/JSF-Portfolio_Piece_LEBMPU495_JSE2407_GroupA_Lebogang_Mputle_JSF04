@@ -13,6 +13,7 @@
       <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="w-full md:block md:w-auto">
         <ul class="flex flex-col md:flex-row md:space-x-8">
           <li><router-link to="/wishlist" class="text-white md:hover:text-blue-700">Wishlist</router-link></li>
+          <li><router-link to="/comparison" class="text-white md:hover:text-blue-700">Comparison</router-link></li> <!-- Add comparison link -->
           <li class="relative">
             <router-link to="/cart" class="text-white md:hover:text-blue-700 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="file: h-6 w-6 stroke-white cursor-pointer">
@@ -35,10 +36,6 @@ export default {
   name: 'Header',
   data() {
     return {
-      /**
-       * Indicates if the navigation menu is open.
-       * @type {boolean}
-       */
       isOpen: false
     };
   },
@@ -46,8 +43,6 @@ export default {
     ...mapGetters(['cartCount'])
   }
 };
-
-
 </script>
 
 <style scoped>

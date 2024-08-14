@@ -4,12 +4,14 @@ import ProductDetails from '../components/ProductDetails.vue';
 import Cart from '../views/Cart.vue';
 import Wishlist from '../views/Wishlist.vue';
 import LoginModal from '../components/LoginModal.vue';
+import Comparison from '../views/Comparison.vue'; // Import the Comparison component
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/product/:id', name: 'ProductDetails', component: ProductDetails, props: true },
   { path: '/cart', name: 'Cart', component: Cart, meta: { requiresAuth: true } },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist, meta: { requiresAuth: true } },
+  { path: '/comparison', name: 'Comparison', component: Comparison, meta: { requiresAuth: true } }, // Add the Comparison route
   { path: '/login', name: 'LoginModal', component: LoginModal },
 ];
 

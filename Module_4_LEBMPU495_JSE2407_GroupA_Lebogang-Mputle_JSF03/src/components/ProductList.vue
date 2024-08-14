@@ -41,8 +41,13 @@
           <div class="flex gap-2">
             <button @click.stop="addToCart(product)" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Add to Cart</button>
             <button @click.stop="addToWishlist(product)" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition">Add to Wishlist</button>
+            <!-- New comparison button -->
+            <button @click.stop="addToComparison(product)" class="bg-green-500 text-white px-2 py-2 rounded hover:bg-green-600 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+              </svg>
+            </button>
           </div>
-          
           <div class="flex items-center mb-2">
             <svg v-for="star in 5" :key="star" :class="star <= product.rating.rate ? 'text-yellow-500' : 'text-gray-300'" class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
               <path d="M9.049.999a1 1 0 011.902 0l2.462 5.004 5.511.8a1 1 0 01.554 1.706l-3.989 3.886.942 5.484a1 1 0 01-1.451 1.054L10 15.347l-4.926 2.59a1 1 0 01-1.451-1.054l.942-5.484-3.989-3.886a1 1 0 01.554-1.706l5.511-.8 2.462-5.004z"></path>
@@ -75,6 +80,7 @@
     </template>
   </div>
 </template>
+
 
 <script>
 export default {
@@ -130,6 +136,16 @@ export default {
     };
   },
   methods: {
+
+  /**
+   * Adds a product to the comparison list.
+   * @param {Object} product - The product to add to the comparison list.
+   */
+  addToComparison(product) {
+    alert(`Added ${product.title} to comparison list!`);
+    this.$store.commit('addToComparison', product);
+  },
+
     /**
      * Fetches the list of product categories from the API.
      * @returns {Promise<void>}
