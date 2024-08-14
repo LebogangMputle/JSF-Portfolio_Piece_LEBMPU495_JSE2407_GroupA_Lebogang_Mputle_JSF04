@@ -9,6 +9,7 @@ import { createStore } from 'vuex';
  * @property {Array} products - List of products.
  * @property {Array} cart - List of products in the cart, each with a quantity.
  * @property {Array} wishlist - List of products in the wishlist.
+ * @property {Array} comparisonList - List of products in the comparison list.
  * @property {boolean} isLoggedIn - User's login status.
  */
 
@@ -16,7 +17,7 @@ const state = {
   products: [],
   cart: [],
   wishlist: [],
-  comparisonList: [],
+  comparisonList: [], // Added comparisonList state
   isLoggedIn: false,
 };
 
@@ -45,12 +46,12 @@ const mutations = {
   addToComparison(state, product) {
     const existingProduct = state.comparisonList.find(item => item.id === product.id);
     if (!existingProduct) {
-      state.comparisonList.push(product);
+      state.comparisonList.push(product); // Adds product to comparison list if it doesn't already exist
     }
   },
 
   removeFromComparison(state, productId) {
-    state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
+    state.comparisonList = state.comparisonList.filter(product => product.id !== productId); // Removes product from comparison list by its ID
   },
 
   incrementQuantity(state, productId) {
@@ -94,9 +95,9 @@ const getters = {
   products: (state) => state.products,
   cart: (state) => state.cart,
   wishlist: (state) => state.wishlist,
-  comparisonList: (state) => state.comparisonList,
+  comparisonList: (state) => state.comparisonList, // Getter for comparison list
   isLoggedIn: (state) => state.isLoggedIn,
-  
+
   cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
 
   cartTotal(state) {
