@@ -16,6 +16,7 @@ const state = {
   products: [],
   cart: [],
   wishlist: [],
+  comparisonList: [],
   isLoggedIn: false,
 };
 
@@ -39,6 +40,17 @@ const mutations = {
 
   removeFromCart(state, productId) {
     state.cart = state.cart.filter(product => product.id !== productId);
+  },
+
+  addToComparison(state, product) {
+    const existingProduct = state.comparisonList.find(item => item.id === product.id);
+    if (!existingProduct) {
+      state.comparisonList.push(product);
+    }
+  },
+
+  removeFromComparison(state, productId) {
+    state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
   },
 
   incrementQuantity(state, productId) {
@@ -82,6 +94,7 @@ const getters = {
   products: (state) => state.products,
   cart: (state) => state.cart,
   wishlist: (state) => state.wishlist,
+  comparisonList: (state) => state.comparisonList,
   isLoggedIn: (state) => state.isLoggedIn,
   
   cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
