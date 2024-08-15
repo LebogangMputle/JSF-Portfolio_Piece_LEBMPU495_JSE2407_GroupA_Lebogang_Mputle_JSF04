@@ -2,7 +2,8 @@
   <div class="p-4 bg-[#caf0f8]">
     <h1 class="text-2xl font-semibold mb-4">Comparison</h1>
     <button @click="$router.push('/')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-4">Back to Products</button>
-    
+    <button @click="clearComparison" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mb-4">Clear Comparison List</button>
+
     <div v-if="filteredComparisonList.length === 0" class="text-center text-gray-600">Your comparison list is empty.</div>
     
     <div v-else class="overflow-x-auto">
@@ -79,8 +80,14 @@ export default {
   },
   removeFromComparisonList(productId) {
     this.$store.commit('removeFromComparison', productId); // Correct mutation name
-  }
+  },
+  clearComparison() {
+      this.$store.commit('clearComparisonList'); // Commit the mutation to clear the comparison list
+      this.updateFilteredComparisonList(); // Update the filtered list to reflect the change
+    },
 },
+
+
   created() {
     this.updateFilteredComparisonList();
   }

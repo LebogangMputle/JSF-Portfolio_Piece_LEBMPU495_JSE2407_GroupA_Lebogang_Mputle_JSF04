@@ -54,6 +54,10 @@ const mutations = {
     }
   },
 
+  clearComparisonList(state) {
+    state.comparisonList = []; // Clear all items from the comparison list
+  },
+
   removeFromComparison(state, productId) {
     state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
   },
