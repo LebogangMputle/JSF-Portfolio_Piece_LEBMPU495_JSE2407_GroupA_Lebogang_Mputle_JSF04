@@ -45,14 +45,17 @@ const mutations = {
 
   addToComparison(state, product) {
     const existingProduct = state.comparisonList.find(item => item.id === product.id);
-    if (!existingProduct) {
-      state.comparisonList.push(product); // Adds product to comparison list if it doesn't already exist
+    const maxComparisonItems = 4; // Set the maximum number of items allowed in comparison
+
+    if (!existingProduct && state.comparisonList.length < maxComparisonItems) {
+      state.comparisonList.push(product);
+    } else if (state.comparisonList.length >= maxComparisonItems) {
+      alert(`You can only compare up to ${maxComparisonItems} items at a time.`);
     }
   },
+
   removeFromComparison(state, productId) {
-    console.log('Removing product with ID:', productId); // Debugging line
     state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
-    console.log('Updated comparison list:', state.comparisonList); // Log updated list
   },
 
   incrementQuantity(state, productId) {
