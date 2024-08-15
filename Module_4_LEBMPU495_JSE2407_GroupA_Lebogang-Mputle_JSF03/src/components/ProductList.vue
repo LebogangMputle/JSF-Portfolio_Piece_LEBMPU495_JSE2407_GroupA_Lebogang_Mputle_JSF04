@@ -146,6 +146,15 @@ export default {
     this.$store.commit('addToComparison', product);
   },
 
+      /**
+     * Removes a product from the comparison list.
+     * @param {number} productId - The ID of the product to remove from the comparison list.
+     */
+     removeFromComparison(productId) {
+      alert(`Removed product with ID ${productId} from comparison list!`);
+      this.$store.commit('removeFromComparison', productId);
+    },
+
     /**
      * Fetches the list of product categories from the API.
      * @returns {Promise<void>}

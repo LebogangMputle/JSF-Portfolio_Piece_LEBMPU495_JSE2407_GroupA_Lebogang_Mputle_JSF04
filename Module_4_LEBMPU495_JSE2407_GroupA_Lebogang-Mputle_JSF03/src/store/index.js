@@ -49,9 +49,10 @@ const mutations = {
       state.comparisonList.push(product); // Adds product to comparison list if it doesn't already exist
     }
   },
-
   removeFromComparison(state, productId) {
-    state.comparisonList = state.comparisonList.filter(product => product.id !== productId); // Removes product from comparison list by its ID
+    console.log('Removing product with ID:', productId); // Debugging line
+    state.comparisonList = state.comparisonList.filter(product => product.id !== productId);
+    console.log('Updated comparison list:', state.comparisonList); // Log updated list
   },
 
   incrementQuantity(state, productId) {
@@ -90,6 +91,7 @@ const actions = {
     commit('setProducts', data);
   },
 };
+
 
 const getters = {
   products: (state) => state.products,
