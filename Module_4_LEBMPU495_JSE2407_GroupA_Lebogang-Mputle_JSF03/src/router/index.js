@@ -6,13 +6,15 @@ import Wishlist from '../views/Wishlist.vue';
 import LoginModal from '../components/LoginModal.vue';
 import Comparison from '../views/Comparison.vue'; // Import the Comparison component
 
+
+
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/product/:id', name: 'ProductDetails', component: ProductDetails, props: true },
   { path: '/cart', name: 'Cart', component: Cart, meta: { requiresAuth: true } },
   { path: '/wishlist', name: 'Wishlist', component: Wishlist, meta: { requiresAuth: true } },
   { path: '/comparison', name: 'Comparison', component: Comparison, meta: { requiresAuth: true } }, // Add the Comparison route
-  { path: '/login', name: 'LoginModal', component: LoginModal },
+  { path: '/loginModal', name: 'LoginModal', component: LoginModal },
 ];
 
 const router = createRouter({
@@ -21,12 +23,12 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('token');
+  const isAuthenticated = !!localStorage.getItem('token'); // Check if the user is authenticated
 
   if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-    next({ name: 'LoginModal', query: { redirect: to.fullPath } });
+    next({ name: 'LoginModal', query: { redirect: to.fullPath } }); // Redirect to login if not authenticated
   } else {
-    next();
+    next(); // Proceed to the route if authenticated or no auth required
   }
 });
 

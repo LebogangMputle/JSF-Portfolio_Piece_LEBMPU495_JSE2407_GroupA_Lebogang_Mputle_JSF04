@@ -18,7 +18,7 @@ const state = {
   cart: [],
   wishlist: [],
   comparisonList: [], // Added comparisonList state
-  isLoggedIn: false,
+  isLoggedIn: !!localStorage.getItem('token'), // Initialize based on token existence
 };
 
 const mutations = {
@@ -92,6 +92,16 @@ const mutations = {
 };
 
 const actions = {
+  login({ commit }, token) {
+    localStorage.setItem('token', token); // Save the token to localStorage
+    commit('setIsLoggedIn', true); // Set the user as logged in
+  },
+
+  logout({ commit }) {
+    localStorage.removeItem('token'); // Remove the token from localStorage
+    commit('setIsLoggedIn', false); // Set the user as logged out
+  },
+  
   async fetchProducts({ commit }) {
     const response = await fetch('https://fakestoreapi.com/products');
     const data = await response.json();

@@ -5,7 +5,13 @@
       <form @submit.prevent="login">
         <div class="mb-4">
           <label for="username" class="block mb-2">Username</label>
-          <input type="text" id="username" v-model="username" class="w-full p-2 border rounded" :disabled="isLoading">
+          <input
+            type="text"
+            id="username"
+            v-model="username"
+            class="w-full p-2 border rounded"
+            :disabled="isLoading"
+          />
         </div>
         <div class="mb-4">
           <label for="password" class="block mb-2">Password</label>
@@ -32,8 +38,19 @@
           {{ errorMessage }}
         </div>
         <div class="flex justify-end">
-          <button type="button" @click="$emit('cancel')" class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2" :disabled="isLoading">Cancel</button>
-          <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded" :disabled="isLoading">
+          <button
+            type="button"
+            @click="$emit('cancel')"
+            class="bg-gray-200 text-gray-800 py-2 px-4 rounded mr-2"
+            :disabled="isLoading"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-500 text-white py-2 px-4 rounded"
+            :disabled="isLoading"
+          >
             {{ isLoading ? 'Logging in...' : 'Login' }}
           </button>
         </div>
@@ -82,10 +99,14 @@ export default {
         if (response.ok) {
           // Store the token for future requests
           localStorage.setItem('token', data.token);
-          const redirectTo = this.$route.query.redirect || '/'; // Redirect to the originally requested page or home
-          this.$router.push(redirectTo); // Navigate to the page after login
-          this.$emit('login-success'); // Notify the parent component about successful login
-          this.$emit('cancel'); // Close the login modal
+
+          // Redirect to the originally requested page or home
+          const redirectTo = this.$route.query.redirect || '/';
+          this.$router.push(redirectTo);
+
+          // Notify the parent component about successful login and close the login modal
+          this.$emit('login-success');
+          this.$emit('cancel');
         } else {
           this.errorMessage = 'Login failed, check your username or password.';
         }
