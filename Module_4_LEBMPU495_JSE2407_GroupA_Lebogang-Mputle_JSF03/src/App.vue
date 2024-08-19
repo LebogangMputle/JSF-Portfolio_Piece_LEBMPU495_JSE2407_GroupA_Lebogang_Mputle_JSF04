@@ -1,11 +1,13 @@
 <template>
-  <div id="app">
+  <div :class="{ 'dark': isDarkMode }" id="app">
     <!-- Pass isAuthenticated and handleLogout as props to the Header component -->
     <Header 
       :isAuthenticated="isAuthenticated" 
       @toggle-login="showLoginModal = !showLoginModal" 
       @logout="logout"
-    />
+      @toggle-dark-mode="toggleDarkMode"
+    >
+    </Header>
     <router-view></router-view> <!-- Display routed components -->
 
     <!-- Login Modal -->
@@ -16,6 +18,7 @@
     />
   </div>
 </template>
+
 
 <script>
 import Header from './components/Header.vue';
@@ -29,12 +32,16 @@ export default {
   data() {
     return {
       showLoginModal: false, // Controls the visibility of the login modal
-      isAuthenticated: false // Tracks if the user is authenticated
+      isAuthenticated: false, // Tracks if the user is authenticated
+      isDarkMode: false // Tracks if dark mode is enabled
     };
   },
   mounted() {
     // Check if the user is already logged in by verifying the token in localStorage
     this.isAuthenticated = !!localStorage.getItem('token');
+
+    // Check the user's dark mode preference from localStorage
+    this.isDarkMode = localStorage.getItem('darkMode') === 'true';
   },
   methods: {
     /**
@@ -53,7 +60,16 @@ export default {
       localStorage.removeItem('token'); // Remove the token from localStorage
       this.isAuthenticated = false; // Set the user as not authenticated
       this.$router.push('/'); // Navigate to the home page after logout
+    },
+    /**
+     * Toggles between dark and light mode.
+     * Stores the user's preference in localStorage.
+     */
+    toggleDarkMode() {
+      this.isDarkMode = !this.isDarkMode; // Toggle dark mode state
+      localStorage.setItem('darkMode', this.isDarkMode); // Save the preference in localStorage
     }
   }
 };
 </script>
+

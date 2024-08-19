@@ -56,10 +56,10 @@
         </div>
       </form>
       <!-- Display loading spinner or message when loading -->
-      <div v-if="isLoading" class="mt-4 text-center text-gray-600">
-        Authenticating, please wait...
-        <div class="spinner-border animate-spin inline-block w-4 h-4 border-2 rounded-full border-t-transparent mt-2"></div>
-      </div>
+      <div v-if="isLoading" class="flex justify-center mt-4">
+  <div class="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
+  <p class="ml-3 text-gray-600">Authenticating, please wait...</p>
+</div>
     </div>
   </div>
 </template>

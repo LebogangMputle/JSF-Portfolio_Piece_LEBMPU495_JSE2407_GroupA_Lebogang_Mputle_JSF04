@@ -23,6 +23,12 @@
               Comparison
             </router-link>
           </li>
+          <li>
+                  <!-- Dark Mode Toggle Button -->
+      <button @click="$emit('toggle-dark-mode')" class="text-white">
+        {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+      </button>
+          </li>
           <li class="relative">
             <router-link to="/cart" class="text-white md:hover:text-blue-700 flex items-center">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 stroke-white cursor-pointer">
@@ -64,10 +70,17 @@ export default {
   methods: {
     logout() {
       // Dispatch logout action to clear authentication data
-      this.$store.dispatch('logout');
+      localStorage.removeItem('token');
+      this.$store.commit('setIsLoggedIn', false);
       // Redirect to home page after logout
       this.$router.push('/');
     },
   },
+  props: {
+    isDarkMode: {
+      type: Boolean,
+      required: true
+    }
+  }
 };
 </script>
