@@ -9,7 +9,7 @@
     </div>
 
     <div v-else-if="filteredComparisonList.length === 0" class="text-center text-gray-600">Your comparison list is empty.</div>
-    
+
     <div v-else class="overflow-x-auto">
       <table class="min-w-full bg-white border border-gray-300">
         <thead>
@@ -46,58 +46,57 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data() {
     return {
-      sortOrder: 'default',
-      searchQuery: '',
-      filteredComparisonList: []
+      sortOrder: 'default', // Set initial sort order
+      searchQuery: '', // Set initial search query
+      filteredComparisonList: [] // Initialize filtered comparison list
     };
   },
   computed: {
     isLoggedIn() {
-      return this.$store.getters.isLoggedIn;
+      return this.$store.getters.isLoggedIn; // Check if the user is logged in
     },
     comparisonList() {
-      return this.$store.getters.comparisonList;
+      return this.$store.getters.comparisonList; // Get the comparison list from the store
     },
   },
   watch: {
-    comparisonList: 'updateFilteredComparisonList',
-    sortOrder: 'sortItems',
-    searchQuery: 'filterItems'
+    comparisonList: 'updateFilteredComparisonList', // Watch for changes in the comparison list
+    sortOrder: 'sortItems', // Watch for changes in the sort order
+    searchQuery: 'filterItems' // Watch for changes in the search query
   },
   methods: {
     updateFilteredComparisonList() {
-    this.filteredComparisonList = [...this.comparisonList];
-    this.sortItems();
-    this.filterItems();
-  },
-  sortItems() {
-    if (this.sortOrder === 'price-asc') {
-      this.filteredComparisonList.sort((a, b) => a.price - b.price);
-    } else if (this.sortOrder === 'price-desc') {
-      this.filteredComparisonList.sort((a, b) => b.price - a.price);
-    }
-  },
-  filterItems() {
-    this.filteredComparisonList = this.comparisonList.filter(product => product.title.toLowerCase().includes(this.searchQuery.toLowerCase()));
-    this.sortItems();
-  },
-  removeFromComparisonList(productId) {
-    this.$store.commit('removeFromComparison', productId); // Correct mutation name
-  },
-  clearComparison() {
-      this.$store.commit('clearComparisonList'); // Commit the mutation to clear the comparison list
-      this.updateFilteredComparisonList(); // Update the filtered list to reflect the change
+      this.filteredComparisonList = [...this.comparisonList]; // Update the filtered list
+      this.sortItems(); // Apply sorting
+      this.filterItems(); // Apply filtering
     },
-},
-
-
+    sortItems() {
+      if (this.sortOrder === 'price-asc') {
+        this.filteredComparisonList.sort((a, b) => a.price - b.price); // Sort by price ascending
+      } else if (this.sortOrder === 'price-desc') {
+        this.filteredComparisonList.sort((a, b) => b.price - a.price); // Sort by price descending
+      }
+    },
+    filterItems() {
+      this.filteredComparisonList = this.comparisonList.filter(product =>
+        product.title.toLowerCase().includes(this.searchQuery.toLowerCase())
+      ); // Filter items by search query
+      this.sortItems(); // Apply sorting after filtering
+    },
+    removeFromComparisonList(productId) {
+      this.$store.commit('removeFromComparison', productId); // Remove item from comparison list
+    },
+    clearComparison() {
+      this.$store.commit('clearComparisonList'); // Clear the comparison list
+      this.updateFilteredComparisonList(); // Update the filtered list
+    },
+  },
   created() {
-    this.updateFilteredComparisonList();
+    this.updateFilteredComparisonList(); // Initialize the filtered comparison list on creation
   }
 };
 </script>
@@ -105,11 +104,11 @@ export default {
 <style scoped>
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse; /* Ensure borders are collapsed */
 }
 th, td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
+  padding: 8px; /* Padding for cells */
+  text-align: left; /* Align text to the left */
+  border-bottom: 1px solid #ddd; /* Border for cells */
 }
 </style>
