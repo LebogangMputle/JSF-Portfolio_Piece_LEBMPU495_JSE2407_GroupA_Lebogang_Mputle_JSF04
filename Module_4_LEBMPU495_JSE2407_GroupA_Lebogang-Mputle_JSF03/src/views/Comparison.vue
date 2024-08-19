@@ -4,10 +4,6 @@
     <button @click="$router.push('/')" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition mb-4">Back to Products</button>
     <button v-if="isLoggedIn" @click="clearComparison" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mb-4">Clear Comparison List</button>
 
-    <div v-if="!isLoggedIn">
-      <p class="text-center text-gray-600">Please <router-link to="/login" class="text-blue-500">log in</router-link> to view your comparison list.</p>
-    </div>
-
     <div v-else-if="filteredComparisonList.length === 0" class="text-center text-gray-600">Your comparison list is empty.</div>
 
     <div v-else class="overflow-x-auto">
