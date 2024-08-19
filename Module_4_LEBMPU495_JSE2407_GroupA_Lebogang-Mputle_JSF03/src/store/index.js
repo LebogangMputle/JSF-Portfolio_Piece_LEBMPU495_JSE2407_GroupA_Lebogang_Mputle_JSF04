@@ -89,6 +89,18 @@ const mutations = {
   setIsLoggedIn(state, status) {
     state.isLoggedIn = status;
   },
+  moveToCart(state, productId) {
+    const product = state.wishlist.find(item => item.id === productId);
+    if (product) {
+      const cartItem = state.cart.find(item => item.id === productId);
+      if (cartItem) {
+        cartItem.quantity += 1; // Increment quantity if already in cart
+      } else {
+        state.cart.push({ ...product, quantity: 1 }); // Add to cart with quantity 1
+      }
+      state.wishlist = state.wishlist.filter(item => item.id !== productId); // Remove from wishlist
+    }
+  },
 };
 
 const actions = {
@@ -100,6 +112,10 @@ const actions = {
   logout({ commit }) {
     localStorage.removeItem('token'); // Remove the token from localStorage
     commit('setIsLoggedIn', false); // Set the user as logged out
+  },
+
+  addToCartFromWishlist({ commit }, productId) {
+    commit('moveToCart', productId);
   },
   
   async fetchProducts({ commit }) {
@@ -120,7 +136,7 @@ const getters = {
   cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
 
   wishlistCount: (state) => state.wishlist.length,
-  
+
   cartTotal(state) {
     return state.cart.reduce((total, product) => {
       return total + product.price * product.quantity;

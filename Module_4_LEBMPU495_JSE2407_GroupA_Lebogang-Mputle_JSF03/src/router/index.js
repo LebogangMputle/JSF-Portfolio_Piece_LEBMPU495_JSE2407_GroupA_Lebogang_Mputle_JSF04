@@ -6,8 +6,6 @@ import Wishlist from '../views/Wishlist.vue';
 import LoginModal from '../components/LoginModal.vue';
 import Comparison from '../views/Comparison.vue'; // Import the Comparison component
 
-
-
 const routes = [
   { path: '/', name: 'Home', component: Home },
   { path: '/product/:id', name: 'ProductDetails', component: ProductDetails, props: true },
@@ -18,7 +16,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL || '/'),
+  history: createWebHistory(import.meta.env.BASE_URL || '/'), // Create history mode for clean URLs
   routes
 });
 
