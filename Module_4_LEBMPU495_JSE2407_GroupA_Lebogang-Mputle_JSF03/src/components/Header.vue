@@ -13,21 +13,13 @@
       </button>
       <div :class="{ 'block': isOpen, 'hidden': !isOpen }" class="w-full md:block md:w-auto">
         <ul class="flex flex-col md:flex-row md:space-x-8">
-          <li>
-            <router-link to="/wishlist" class="text-white md:hover:text-blue-700">
-              Wishlist
+          <li class="relative">
+            <router-link to="/wishlist" class="text-white md:hover:text-blue-700 flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-6 w-6 stroke-white cursor-pointer">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.172 4.172a4 4 0 015.656 0L12 7.343l3.172-3.171a4 4 0 115.656 5.656L12 19.828l-8.828-8.828a4 4 0 010-5.656z" />
+              </svg>
+              <span v-if="wishlistCount > 0" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ wishlistCount }}</span>
             </router-link>
-          </li>
-          <li>
-            <router-link to="/comparison" class="text-white md:hover:text-blue-700">
-              Comparison
-            </router-link>
-          </li>
-          <li>
-                  <!-- Dark Mode Toggle Button -->
-      <button @click="$emit('toggle-dark-mode')" class="text-white">
-        {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
-      </button>
           </li>
           <li class="relative">
             <router-link to="/cart" class="text-white md:hover:text-blue-700 flex items-center">
@@ -36,6 +28,17 @@
               </svg>
               <span v-if="cartCount > 0" class="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">{{ cartCount }}</span>
             </router-link>
+          </li>
+          <li>
+            <router-link to="/comparison" class="text-white md:hover:text-blue-700">
+              Comparison
+            </router-link>
+          </li>
+          <li>
+            <!-- Dark Mode Toggle Button -->
+            <button @click="$emit('toggle-dark-mode')" class="text-white">
+              {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+            </button>
           </li>
           <!-- Conditional rendering of Login/Logout button based on authentication state -->
           <li v-if="!isLoggedIn">
@@ -65,7 +68,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['cartCount', 'isLoggedIn']), // Map Vuex getters
+    ...mapGetters({
+      cartCount: 'cartCount', 
+      wishlistCount: 'wishlistCount',  // Ensure this is mapped correctly from Vuex
+      isLoggedIn: 'isLoggedIn'
+    }),
   },
   methods: {
     logout() {

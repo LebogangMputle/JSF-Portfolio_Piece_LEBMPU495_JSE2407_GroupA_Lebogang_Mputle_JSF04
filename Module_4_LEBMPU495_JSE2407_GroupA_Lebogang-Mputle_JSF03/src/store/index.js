@@ -119,6 +119,8 @@ const getters = {
 
   cartCount: (state) => state.cart.reduce((count, item) => count + item.quantity, 0),
 
+  wishlistCount: (state) => state.wishlist.length,
+  
   cartTotal(state) {
     return state.cart.reduce((total, product) => {
       return total + product.price * product.quantity;
