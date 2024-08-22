@@ -96,4 +96,7 @@ To set up the project
     4. Start the development server:
         - npm run dev
 
-## Video Link: https://drive.google.com/drive/folders/1rF9K3RdkRBWyGR296fQ55QZaxeyd5Ha4?usp=drive_link(failed to upload on youtube due to the fact that my video is too long)
+## Video Link: 
+https://drive.google.com/drive/folders/1rF9K3RdkRBWyGR296fQ55QZaxeyd5Ha4?usp=drive_link(failed to upload on youtube due to the fact that my video is too long)
+## Deployed Link: 
+https://jsf-portfolio-piece-lebmpu-495-jse-2407-group-a-lebo-m03lb0xnf.vercel.app
