@@ -95,3 +95,5 @@ To set up the project
         - npm install
     4. Start the development server:
         - npm run dev
+
+## Video Link: https://drive.google.com/drive/folders/1rF9K3RdkRBWyGR296fQ55QZaxeyd5Ha4?usp=drive_link(failed to upload on youtube due to the fact that my video is too long)
